@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>隨機數字生成器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+            background-color: #f0f8ff;
+            color: #333;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: #4682b4;
+        }
+        label {
+            font-size: 1.2em;
+            margin: 10px 0;
+        }
+        input[type="number"], input[type="text"] {
+            font-size: 1.2em;
+            padding: 10px;
+            margin: 10px 0;
+            width: 200px;
+            border: 2px solid #4682b4;
+            border-radius: 5px;
+        }
+        button {
+            font-size: 1.2em;
+            padding: 10px 20px;
+            margin: 20px 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #4682b4;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #5a9bd4;
+        }
+        .hidden {
+            display: none;
+        }
+        .number-display {
+            font-size: 3em;
+            margin-top: 20px;
+            padding: 20px;
+            border: 2px solid #4682b4;
+            border-radius: 10px;
+            background-color: #e6f7ff;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <div id="input-screen">
+        <h1>隨機數字生成器</h1>
+        <label for="digits">輸入你想要的位數 (A):</label><br>
+        <input type="number" id="digits" min="1" required><br><br>
+        <label for="forcedNumber">輸入你想要強迫的數字 (B):</label><br>
+        <input type="text" id="forcedNumber" required><br><br>
+        <button onclick="nextStep()">下一步</button>
+    </div>
+
+    <div id="display-screen" class="hidden">
+        <h1>隨機數字顯示</h1>
+        <div class="number-display" id="numberDisplay">0000</div>
+        <button id="startButton" onclick="start()">開始</button>
+        <button id="stopButton" onclick="stop()" disabled>停止</button>
+    </div>
+
+    <script>
+        let interval;
+        let stopCount = 0;
+
+        function nextStep() {
+            const digits = parseInt(document.getElementById('digits').value);
+            const placeholder = '0'.repeat(digits);
+            document.getElementById('numberDisplay').textContent = placeholder;
+
+            document.getElementById('input-screen').classList.add('hidden');
+            document.getElementById('display-screen').classList.remove('hidden');
+        }
+
+        function generateRandomNumber(digits) {
+            let number = '';
+            for (let i = 0; i < digits; i++) {
+                number += Math.floor(Math.random() * 10).toString();
+            }
+            return number;
+        }
+
+        function start() {
+            const digits = parseInt(document.getElementById('digits').value);
+            interval = setInterval(() => {
+                document.getElementById('numberDisplay').textContent = generateRandomNumber(digits);
+            }, 100);
+            document.getElementById('startButton').disabled = true;
+            document.getElementById('stopButton').disabled = false;
+        }
+
+        function stop() {
+            clearInterval(interval);
+            stopCount++;
+            const forcedNumber = document.getElementById('forcedNumber').value;
+
+            if (stopCount === 3) {
+                document.getElementById('numberDisplay').textContent = forcedNumber;
+                stopCount = 0; // Reset stopCount after forcing the number
+            }
+
+            document.getElementById('startButton').disabled = false;
+            document.getElementById('stopButton').disabled = true;
+        }
+    </script>
+</body>
+</html>
