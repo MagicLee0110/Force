@@ -78,6 +78,7 @@
     <script>
         let interval;
         let stopCount = 0;
+        let forcedNumberDisplayed = false;
 
         function nextStep() {
             const digits = parseInt(document.getElementById('digits').value);
@@ -107,12 +108,15 @@
 
         function stop() {
             clearInterval(interval);
-            stopCount++;
+            if (!forcedNumberDisplayed) {
+                stopCount++;
+            }
+
             const forcedNumber = document.getElementById('forcedNumber').value;
 
-            if (stopCount === 3) {
+            if (stopCount === 3 && !forcedNumberDisplayed) {
                 document.getElementById('numberDisplay').textContent = forcedNumber;
-                stopCount = 0; // Reset stopCount after forcing the number
+                forcedNumberDisplayed = true;
             }
 
             document.getElementById('startButton').disabled = false;
