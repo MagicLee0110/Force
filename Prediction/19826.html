@@ -2,10 +2,9 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <title>數字遊戲</title>
     <style>
         body {
@@ -15,6 +14,7 @@
             align-items: center;
             height: 100vh;
             background-color: #f0f0f0;
+            font-size: 18px; /* 增加基礎字體大小 */
         }
 
         .container {
@@ -33,20 +33,22 @@
         }
 
         .number-input {
-            width: 100px;
-            padding: 5px;
+            width: 120px; /* 增大輸入框寬度 */
+            padding: 10px; /* 增大輸入框內邊距 */
             margin-right: 10px;
             border: 1px solid #ccc;
             border-radius: 5px;
             text-align: center;
+            font-size: 18px; /* 增大輸入框內文字大小 */
         }
 
         .toggle-button, .random-button, .calculate-button {
-            padding: 5px 10px;
+            padding: 10px 15px; /* 增大按鈕內邊距 */
             border: none;
             border-radius: 5px;
             cursor: pointer;
             margin-right: 5px;
+            font-size: 18px; /* 增大按鈕文字大小 */
         }
 
         .toggle-button {
@@ -79,6 +81,7 @@
 
         h1 {
             margin-bottom: 20px;
+            font-size: 24px; /* 增大標題字體大小 */
         }
 
         #result {
@@ -86,6 +89,7 @@
             text-align: center; /* 使內容水平居中 */
             margin-top: 20px;
             font-family: monospace; /* 使用等寬字體保持對齊 */
+            font-size: 20px; /* 增大結果文字大小 */
         }
 
         .fade-in {
@@ -154,6 +158,7 @@
                 alert("此網頁禁止使用Ctrl+U 組合鍵");
             }
         });
+
         let thirdInputClickCount = 0;
 
         function toggleInput(inputId) {
