@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>數字遊戲</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+            justify-content: center;
+        }
+
+        .number-input {
+            width: 100px;
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .toggle-button, .random-button, .calculate-button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .toggle-button {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .random-button {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .calculate-button {
+            background-color: #dc3545;
+            color: white;
+            margin-top: 20px;
+        }
+
+        .hidden {
+            background-color: black;
+            color: black;
+            border: 1px solid black;
+        }
+
+        .visible {
+            background-color: white;
+            color: black;
+            border: 1px solid #ccc;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        #result {
+            white-space: pre-wrap; /* 保持空格和換行 */
+            text-align: center; /* 使內容水平居中 */
+            margin-top: 20px;
+            font-family: monospace; /* 使用等寬字體保持對齊 */
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-in-out;
+            display: inline-block; /* 使結果文字區塊居中顯示 */
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>數字遊戲</h1>
+        <div class="input-group">
+            <input type="text" maxlength="4" class="number-input" id="input1">
+            <button class="toggle-button" onclick="toggleInput('input1')">隱藏</button>
+            <button class="random-button" onclick="generateRandom('input1')">隨機生成</button>
+        </div>
+        <div class="input-group">
+            <input type="text" maxlength="4" class="number-input" id="input2">
+            <button class="toggle-button" onclick="toggleInput('input2')">隱藏</button>
+            <button class="random-button" onclick="generateRandom('input2')">隨機生成</button>
+        </div>
+        <div class="input-group">
+            <input type="text" maxlength="4" class="number-input" id="input3">
+            <button class="toggle-button" onclick="toggleInput('input3')">隱藏</button>
+            <button class="random-button" onclick="generateRandom('input3')">隨機生成</button>
+        </div>
+        <div class="input-group">
+            <input type="text" maxlength="4" class="number-input" id="input4">
+            <button class="toggle-button" onclick="toggleInput('input4')">隱藏</button>
+            <button class="random-button" onclick="generateRandom('input4')">隨機生成</button>
+        </div>
+        <button class="calculate-button" onclick="calculateSum()">計算</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        let thirdInputClickCount = 0;
+
+        function toggleInput(inputId) {
+            const input = document.getElementById(inputId);
+            const button = input.nextElementSibling;
+
+            if (input.classList.contains('hidden')) {
+                input.classList.remove('hidden');
+                input.classList.add('visible');
+                button.textContent = '隱藏';
+            } else {
+                input.classList.remove('visible');
+                input.classList.add('hidden');
+                button.textContent = '顯示';
+            }
+        }
+
+        function generateRandom(inputId) {
+            const input = document.getElementById(inputId);
+
+            if (inputId === 'input3') {
+                thirdInputClickCount++;
+
+                if (thirdInputClickCount === 1) {
+                    const input1Value = parseInt(document.getElementById('input1').value) || 0;
+                    input.value = 10987 - input1Value;
+                } else if (thirdInputClickCount === 2) {
+                    const input2Value = parseInt(document.getElementById('input2').value) || 0;
+                    input.value = 9950 - input2Value;
+                } else {
+                    input.value = Math.floor(1000 + Math.random() * 9000); // 生成4位隨機數字
+                }
+            } else {
+                input.value = Math.floor(1000 + Math.random() * 9000); // 生成4位隨機數字
+            }
+        }
+
+        function calculateSum() {
+            const input1Value = parseInt(document.getElementById('input1').value) || 0;
+            const input2Value = parseInt(document.getElementById('input2').value) || 0;
+            const input3Value = parseInt(document.getElementById('input3').value) || 0;
+            const input4Value = parseInt(document.getElementById('input4').value) || 0;
+
+            const numbers = [input1Value, input2Value, input3Value, input4Value];
+            const sum = numbers.reduce((a, b) => a + b, 0);
+
+            let resultText = '';
+            let delay = 0;
+
+            // Show input1Value
+            setTimeout(() => {
+                resultText = formatNumber(numbers[0]);
+                showResult(resultText);
+            }, delay);
+            delay += 1000;
+
+            // Show + input2Value
+            setTimeout(() => {
+                resultText += `\n+${formatNumber(numbers[1])}`;
+                showResult(resultText);
+            }, delay);
+            delay += 1000;
+
+            // Show input3Value
+            setTimeout(() => {
+                resultText += `\n+${formatNumber(numbers[2])}`;
+                showResult(resultText);
+            }, delay);
+            delay += 1000;
+
+            // Show input4Value
+            setTimeout(() => {
+                resultText += `\n+${formatNumber(numbers[3])}`;
+                showResult(resultText);
+            }, delay);
+            delay += 1000;
+
+            // Show result line
+            setTimeout(() => {
+                resultText += `\n--------`;
+                showResult(resultText);
+            }, delay);
+            delay += 1000;
+
+            // Show sum
+            setTimeout(() => {
+                resultText += `\n= ${formatNumber(sum)}`;
+                showResult(resultText);
+            }, delay);
+        }
+
+        function showResult(text) {
+            const resultDiv = document.createElement('div');
+            resultDiv.className = 'fade-in';
+            resultDiv.textContent = text;
+            document.getElementById('result').innerHTML = ''; // Clear previous result
+            document.getElementById('result').appendChild(resultDiv);
+        }
+
+        function formatNumber(number) {
+            // Format number to ensure 4 digits with leading zeros if needed
+            return number.toString().padStart(4, '0');
+        }
+    </script>
+</body>
+</html>
